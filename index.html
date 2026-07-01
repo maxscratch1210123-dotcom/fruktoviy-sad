@@ -52,7 +52,12 @@ body{min-height:100vh;background:#1a1a2e;display:flex;justify-content:center;ali
 .metro-content .station button:disabled{background:#555;color:#888;cursor:not-allowed;transform:none}
 .metro-content .close-btn{background:#e74c3c;border:none;color:#fff;padding:10px 20px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;width:100%;margin-top:15px}
 .metro-content .close-btn:hover{background:#c0392b}
-@media (max-width:480px){.menu-screen h1{font-size:24px}.menu-btn{width:150px;font-size:16px;padding:10px 20px}.currency-display{font-size:16px;padding:6px 14px}.header{font-size:12px}.cell{font-size:18px}}
+.abilities-bar{display:flex;gap:4px;flex-wrap:wrap;padding:5px 0}
+.abilities-bar button{font-size:11px;padding:4px 8px;background:#0f3460;border:none;color:#fff;border-radius:15px;cursor:pointer;transition:.2s}
+.abilities-bar button:hover{background:#533483}
+.abilities-bar .shop-in-game{background:#f9ca24;color:#1a1a2e;font-weight:700}
+.abilities-bar .shop-in-game:hover{background:#f1c40f}
+@media (max-width:480px){.menu-screen h1{font-size:24px}.menu-btn{width:150px;font-size:16px;padding:10px 20px}.currency-display{font-size:16px;padding:6px 14px}.header{font-size:12px}.cell{font-size:18px}.abilities-bar button{font-size:10px;padding:3px 6px}}
 </style>
 </head>
 <body>
@@ -76,6 +81,13 @@ body{min-height:100vh;background:#1a1a2e;display:flex;justify-content:center;ali
 <span style="margin-right:10px">🫙 <span id="gameCurrency">0</span></span>
 <button class="back-btn" id="backToMenuBtn">✕ Меню</button>
 </div>
+</div>
+<div class="abilities-bar">
+<button id="useMoves5">➕5 (<span id="countMoves5">0</span>)</button>
+<button id="useMoves10">➕10 (<span id="countMoves10">0</span>)</button>
+<button id="useBomb">💥 (<span id="countBombs">0</span>)</button>
+<button id="useShuffle">🔀 (<span id="countShuffles">0</span>)</button>
+<button id="openShopInGame" class="shop-in-game">🛒</button>
 </div>
 <div class="board" id="board"></div>
 </div>
@@ -107,6 +119,11 @@ body{min-height:100vh;background:#1a1a2e;display:flex;justify-content:center;ali
         { id: 'ring', name: 'Кольцевая', cost: 1200, bonus: { moves: 3 } }
     ];
     let owned = JSON.parse(localStorage.getItem('metroStations')) || [];
+    let abilities = JSON.parse(localStorage.getItem('abilities')) || { moves5: 0, moves10: 0, bombs: 0, shuffles: 0 };
+
+    function saveAbilities() {
+        localStorage.setItem('abilities', JSON.stringify(abilities));
+    }
 
     function getBonusMoves() {
         let t = 0;
@@ -158,6 +175,14 @@ body{min-height:100vh;background:#1a1a2e;display:flex;justify-content:center;ali
         if (td) td.textContent = p;
         if (ttd) ttd.textContent = target;
         if (md) md.textContent = m;
+        const cm5 = document.getElementById('countMoves5');
+        const cm10 = document.getElementById('countMoves10');
+        const cb = document.getElementById('countBombs');
+        const cs = document.getElementById('countShuffles');
+        if (cm5) cm5.textContent = abilities.moves5 || 0;
+        if (cm10) cm10.textContent = abilities.moves10 || 0;
+        if (cb) cb.textContent = abilities.bombs || 0;
+        if (cs) cs.textContent = abilities.shuffles || 0;
     }
 
     function createBoard() {
@@ -264,8 +289,7 @@ body{min-height:100vh;background:#1a1a2e;display:flex;justify-content:center;ali
     function slp(ms) {
         return new Promise(r => setTimeout(r, ms));
     }
-
-    async function pmb(add) {
+      async function pmb(add) {
         while (true) {
             const { matches, groups } = findMatches(b);
             let beff = new Set();
@@ -447,4 +471,341 @@ body{min-height:100vh;background:#1a1a2e;display:flex;justify-content:center;ali
             }
         }
         return false;
-   
+    }
+
+    function shuffle() {
+        while (!hvm()) {
+            for (let r = 0; r < R; r++) {
+                for (let c = 0; c < C; c++) {
+                    if (!isFruitLevel && Math.random() < 0.15 && r > 0 && r < R - 1 && c > 0 && c < C - 1) {
+                        b[r][c] = V;
+                    } else {
+                        b[r][c] = S[Math.floor(Math.random() * S.length)];
+                    }
+                }
+            }
+            let mf = findMatches(b).matches;
+            while (mf.size > 0) {
+                for (const k of mf) {
+                    const [r, c] = k.split(',').map(Number);
+                    b[r][c] = S[Math.floor(Math.random() * S.length)];
+                }
+                mf = findMatches(b).matches;
+            }
+        }
+        rb(false);
+    }
+
+    function onClick(e) {
+        if (proc) return;
+        const r = parseInt(e.currentTarget.dataset.row);
+        const c = parseInt(e.currentTarget.dataset.col);
+        const v = b[r][c];
+        if (v === null || v === V) return;
+
+        if (v === B) {
+            b[r][c] = null;
+            const ex = ab(r, c);
+            for (const k of ex) {
+                const [rr, cc] = k.split(',').map(Number);
+                b[rr][cc] = null;
+            }
+            rb(false, new Set(), ex);
+            setTimeout(() => {
+                for (let cc = 0; cc < C; cc++) {
+                    let wr = R - 1;
+                    for (let rr = R - 1; rr >= 0; rr--) {
+                        if (b[rr][cc] !== null) {
+                            b[wr][cc] = b[rr][cc];
+                            if (wr !== rr) b[rr][cc] = null;
+                            wr--;
+                        }
+                    }
+                    for (let rr = wr; rr >= 0; rr--) {
+                        if (!isFruitLevel && Math.random() < 0.15 && rr > 0 && rr < R - 1 && cc > 0 && cc < C - 1) {
+                            b[rr][cc] = V;
+                        } else {
+                            b[rr][cc] = S[Math.floor(Math.random() * S.length)];
+                        }
+                    }
+                }
+                rb(true);
+                if (!hvm()) shuffle();
+            }, 500);
+            return;
+        }
+
+        if (sr === -1) {
+            sr = r; sc = c;
+            rb(false);
+            return;
+        }
+
+        if (sr === r && sc === c) {
+            sr = -1; sc = -1;
+            rb(false);
+            return;
+        }
+
+        const dr = Math.abs(r - sr);
+        const dc = Math.abs(c - sc);
+        if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+            trySwap(sr, sc, r, c);
+        } else {
+            sr = r; sc = c;
+            rb(false);
+        }
+    }
+
+    async function trySwap(r1, c1, r2, c2) {
+        proc = true;
+        m--;
+        u();
+        [b[r1][c1], b[r2][c2]] = [b[r2][c2], b[r1][c1]];
+        const { matches } = findMatches(b);
+        let hb = false;
+        for (let r = 0; r < R; r++) {
+            for (let c = 0; c < C; c++) {
+                if (b[r][c] === B) hb = true;
+            }
+        }
+        if (matches.size > 0 || hb) {
+            sr = -1; sc = -1;
+            await pmb(true);
+            rb(false);
+        } else {
+            [b[r1][c1], b[r2][c2]] = [b[r2][c2], b[r1][c1]];
+            sr = -1; sc = -1;
+            rb(false);
+        }
+        proc = false;
+    }
+
+    function showShop() {
+        let html = '<div class="metro-content"><h2>🛒 Магазин</h2>';
+        html += '<p style="text-align:center;margin-bottom:15px;">У тебя 🫙 <b>' + cur + '</b> банок</p>';
+        html += '<p style="text-align:center;margin-bottom:15px;color:#a855f7;">Способности сохраняются пока не используешь!</p>';
+        
+        const shopItems = [
+            { id: 'moves5', name: '➕ 5 ходов', cost: 30, desc: 'В наличии: ' + (abilities.moves5 || 0) + ' шт.', ability: 'moves5' },
+            { id: 'moves10', name: '➕ 10 ходов', cost: 50, desc: 'В наличии: ' + (abilities.moves10 || 0) + ' шт.', ability: 'moves10' },
+            { id: 'bombs', name: '💥 Бомба', cost: 40, desc: 'В наличии: ' + (abilities.bombs || 0) + ' шт.', ability: 'bombs' },
+            { id: 'shuffles', name: '🔀 Перемешать', cost: 20, desc: 'В наличии: ' + (abilities.shuffles || 0) + ' шт.', ability: 'shuffles' }
+        ];
+        
+        for (const item of shopItems) {
+            html += '<div class="station">';
+            html += '<div class="header"><span>' + item.name + '</span><span>' + item.cost + ' 🫙</span></div>';
+            html += '<div class="bonus">' + item.desc + '</div>';
+            html += '<button data-item="' + item.id + '" class="buy-item-btn">Купить</button>';
+            html += '</div>';
+        }
+        
+        html += '<button class="close-btn" id="closeShopBtn">✕ Закрыть</button></div>';
+        
+        const modal = document.createElement('div');
+        modal.className = 'metro-modal';
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+        
+        modal.querySelectorAll('.buy-item-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const itemId = this.dataset.item;
+                const item = shopItems.find(i => i.id === itemId);
+                if (item) {
+                    if (cur < item.cost) {
+                        alert('❌ Не хватает банок! Нужно ' + item.cost + ' 🫙');
+                        return;
+                    }
+                    cur -= item.cost;
+                    abilities[item.ability]++;
+                    saveAbilities();
+                    u();
+                    modal.remove();
+                    showShop();
+                }
+            });
+        });
+        
+        const closeBtn = modal.querySelector('#closeShopBtn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => modal.remove());
+        }
+    }
+
+    function showMetro() {
+        let html = '<div class="metro-content"><h2>🚇 Метро 2033</h2>';
+        for (const s of ST) {
+            const cost = getStationCost(s.id);
+            const ownedCount = owned.filter(st => st === s.id).length;
+            let bonusText = '';
+            if (s.bonus.moves) bonusText += '➕' + s.bonus.moves + ' ходов ';
+            if (s.bonus.bottles) bonusText += '🍾+' + Math.round(s.bonus.bottles * 100) + '% банок';
+            html += '<div class="station"><div class="header"><span>' + s.name + ' (' + ownedCount + ' шт.)</span><span>' + cost + ' 🫙</span></div><div class="bonus">' + bonusText + '</div>';
+            if (ownedCount === 0) {
+                html += '<button data-station="' + s.id + '" class="buy-station-btn">Купить</button>';
+            } else {
+                html += '<button disabled>✔ Куплено</button>';
+            }
+            html += '</div>';
+        }
+        html += '<button class="close-btn" id="closeMetroBtn">✕ Закрыть</button></div>';
+
+        const modal = document.createElement('div');
+        modal.className = 'metro-modal';
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+
+        modal.querySelectorAll('.buy-station-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                buyStation(this.dataset.station);
+            });
+        });
+
+        const closeBtn = modal.querySelector('#closeMetroBtn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => modal.remove());
+        }
+    }
+
+    function buyStation(id) {
+        if (proc) return;
+        const cost = getStationCost(id);
+        if (cur < cost) {
+            alert('Не хватает 🫙 банок!');
+            return;
+        }
+        cur -= cost;
+        owned.push(id);
+        localStorage.setItem('metroStations', JSON.stringify(owned));
+        u();
+        alert('🚇 Станция ' + ST.find(s => s.id === id).name + ' восстановлена!');
+        const em = document.querySelector('.metro-modal');
+        if (em) em.remove();
+        showMetro();
+    }
+
+    function showMenu() {
+        if (ms) ms.style.display = 'flex';
+        if (gs) gs.style.display = 'none';
+        u();
+    }
+
+    function showGame() {
+        if (ms) ms.style.display = 'none';
+        if (gs) gs.style.display = 'block';
+        lv = parseInt(localStorage.getItem('currentLevel')) || 1;
+        target = getTarget();
+        p = 0;
+        m = MAX_MOVES + getBonusMoves();
+        cur = parseInt(localStorage.getItem('bottleCurrency')) || 0;
+        b = createBoard();
+        let mf = findMatches(b).matches;
+        while (mf.size > 0) {
+            for (const k of mf) {
+                const [r, c] = k.split(',').map(Number);
+                b[r][c] = S[Math.floor(Math.random() * S.length)];
+            }
+            mf = findMatches(b).matches;
+        }
+        if (!hvm()) shuffle();
+        sr = -1; sc = -1;
+        rb(false);
+        u();
+    }
+
+    document.getElementById('playBtn').addEventListener('click', showGame);
+    document.getElementById('backToMenuBtn').addEventListener('click', showMenu);
+    document.getElementById('shopBtn').addEventListener('click', showShop);
+    document.getElementById('metroBtn').addEventListener('click', showMetro);
+
+    document.getElementById('useMoves5').addEventListener('click', function() {
+        if (abilities.moves5 > 0) {
+            abilities.moves5--;
+            m += 5;
+            saveAbilities();
+            u();
+            alert('✅ +5 ходов!');
+        } else {
+            alert('❌ Нет способностей! Купи в магазине.');
+        }
+    });
+    
+    document.getElementById('useMoves10').addEventListener('click', function() {
+        if (abilities.moves10 > 0) {
+            abilities.moves10--;
+            m += 10;
+            saveAbilities();
+            u();
+            alert('✅ +10 ходов!');
+        } else {
+            alert('❌ Нет способностей! Купи в магазине.');
+        }
+    });
+    
+    document.getElementById('useBomb').addEventListener('click', function() {
+        if (abilities.bombs > 0) {
+            abilities.bombs--;
+            saveAbilities();
+            u();
+            alert('💥 Выбери клетку для взрыва!');
+            proc = true;
+            const bombHandler = function(e) {
+                const r = parseInt(e.currentTarget.dataset.row);
+                const c = parseInt(e.currentTarget.dataset.col);
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        const nr = r + dr;
+                        const nc = c + dc;
+                        if (nr >= 0 && nr < R && nc >= 0 && nc < C) {
+                            b[nr][nc] = null;
+                        }
+                    }
+                }
+                for (let cc = 0; cc < C; cc++) {
+                    let wr = R - 1;
+                    for (let rr = R - 1; rr >= 0; rr--) {
+                        if (b[rr][cc] !== null) {
+                            b[wr][cc] = b[rr][cc];
+                            if (wr !== rr) b[rr][cc] = null;
+                            wr--;
+                        }
+                    }
+                    for (let rr = wr; rr >= 0; rr--) {
+                        b[rr][cc] = S[Math.floor(Math.random() * S.length)];
+                    }
+                }
+                rb(true);
+                proc = false;
+                be.querySelectorAll('.cell').forEach(cell => {
+                    cell.removeEventListener('click', bombHandler);
+                });
+            };
+            be.querySelectorAll('.cell').forEach(cell => {
+                cell.addEventListener('click', bombHandler, { once: true });
+            });
+        } else {
+            alert('❌ Нет бомб! Купи в магазине.');
+        }
+    });
+    
+    document.getElementById('useShuffle').addEventListener('click', function() {
+        if (abilities.shuffles > 0) {
+            abilities.shuffles--;
+            saveAbilities();
+            shuffle();
+            u();
+            alert('🔀 Доска перемешана!');
+        } else {
+            alert('❌ Нет перемешиваний! Купи в магазине.');
+        }
+    });
+    
+    document.getElementById('openShopInGame').addEventListener('click', showShop);
+
+    showMenu();
+    u();
+})();
+</script>
+</body>
+</html>  
