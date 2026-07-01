@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Три в ряд: Метро 2033</title>
+<style>
+*{box-sizing:border-box;user-select:none;margin:0;padding:0}
+body{min-height:100vh;background:#1a1a2e;display:flex;justify-content:center;align-items:center;font-family:sans-serif;overflow:hidden;touch-action:manipulation}
+.container{background:#16213e;padding:15px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.7);width:100%;max-width:520px;max-height:98vh;overflow:hidden}
+.menu-screen{display:flex;flex-direction:column;align-items:center;gap:15px;padding:20px 10px}
+.menu-screen h1{color:#f9ca24;font-size:28px}
+.menu-screen .subtitle{color:#aaa;font-size:14px;text-align:center}
+.menu-btn{background:#0f3460;border:none;color:#fff;padding:12px 30px;border-radius:40px;font-size:18px;font-weight:700;cursor:pointer;width:180px;text-align:center;transition:.2s;touch-action:manipulation}
+.menu-btn:hover{background:#533483;transform:scale(1.05)}
+.menu-btn.primary{background:#f9ca24;color:#1a1a2e}
+.currency-display{color:#eee;font-size:20px;background:#0a0a1a;padding:8px 20px;border-radius:30px;display:flex;align-items:center;gap:8px;border:1px solid #333}
+.currency-display span{color:#a855f7;font-weight:700}
+.game-screen{display:none}
+.header{display:flex;justify-content:space-between;align-items:center;color:#eee;padding:0 0 10px 0;font-size:14px;font-weight:700;flex-wrap:wrap;gap:6px}
+.header .level-info{background:#0f3460;padding:4px 12px;border-radius:20px;font-size:13px}
+.header .progress{background:#0a0a1a;padding:4px 12px;border-radius:20px;font-size:13px;color:#f9ca24}
+.header .moves{background:#0a0a1a;padding:4px 12px;border-radius:20px;font-size:13px;color:#f9ca24}
+.header button{background:#0f3460;border:none;color:#fff;padding:6px 14px;border-radius:30px;font-size:12px;cursor:pointer;transition:.2s;touch-action:manipulation}
+.header button:hover{background:#533483}
+.header .back-btn{background:#e74c3c}
+.header .back-btn:hover{background:#c0392b}
+.board{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;background:#0f3460;padding:6px;border-radius:12px;max-width:100%;aspect-ratio:1/1}
+.cell{aspect-ratio:1/1;background:#1a1a2e;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.4);transition:.08s;position:relative;touch-action:manipulation}
+.cell.selected{outline:2px solid #f9ca24;outline-offset:-2px;transform:scale(.92)}
+.cell.bomb{background:radial-gradient(circle,#f39c12,#e74c3c);color:#fff;text-shadow:0 0 10px rgba(255,255,255,.5);cursor:pointer}
+.cell.bomb:hover{transform:scale(1.1)}
+.cell.vase{background:#8b5cf6;color:#fff;text-shadow:0 0 10px rgba(255,255,255,.3)}
+.cell.fruit{background:#2ecc71;color:#fff;text-shadow:0 0 10px rgba(255,255,255,.3)}
+.empty{background:#0a0a1a;box-shadow:none;cursor:default}
+.cell.falling{animation:dropIn .25s ease-out}
+.cell.matched{animation:matchPop .25s ease-out forwards}
+.cell.exploding{animation:explode .35s ease-out forwards}
+.cell.bomb-created{animation:bombCreate .35s ease-out forwards}
+@keyframes dropIn{0%{transform:translateY(-60px) scale(.7);opacity:0}70%{transform:translateY(5px) scale(1.02);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+@keyframes matchPop{0%{transform:scale(1);opacity:1}50%{transform:scale(1.2) rotate(8deg);opacity:.8}100%{transform:scale(0);opacity:0}}
+@keyframes explode{0%{transform:scale(1);opacity:1;background:#f1c40f}50%{transform:scale(1.5);opacity:.8;background:#e74c3c}100%{transform:scale(0);opacity:0}}
+@keyframes bombCreate{0%{transform:scale(0);opacity:0;background:#f1c40f}50%{transform:scale(1.3);opacity:.8;background:#e74c3c}100%{transform:scale(1);opacity:1;background:radial-gradient(circle,#f39c12,#e74c3c)}}
+.metro-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.metro-content{background:#16213e;padding:20px;border-radius:20px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;color:#eee}
+.metro-content h2{color:#f9ca24;text-align:center;margin-bottom:15px}
+.metro-content .station{background:#0f3460;padding:12px;border-radius:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:4px}
+.metro-content .station .header{display:flex;justify-content:space-between;font-weight:700}
+.metro-content .station .bonus{font-size:13px;color:#a855f7}
+.metro-content .station button{background:#f9ca24;border:none;padding:6px 16px;border-radius:20px;font-weight:700;cursor:pointer;color:#1a1a2e;font-size:14px;margin-top:4px;transition:.2s}
+.metro-content .station button:hover{transform:scale(1.05)}
+.metro-content .station button:disabled{background:#555;color:#888;cursor:not-allowed;transform:none}
+.metro-content .close-btn{background:#e74c3c;border:none;color:#fff;padding:10px 20px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;width:100%;margin-top:15px}
+.metro-content .close-btn:hover{background:#c0392b}
+@media (max-width:480px){.menu-screen h1{font-size:24px}.menu-btn{width:150px;font-size:16px;padding:10px 20px}.currency-display{font-size:16px;padding:6px 14px}.header{font-size:12px}.cell{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="menu-screen" id="menuScreen">
+<h1>🫙 Три в ряд</h1>
+<div class="subtitle">35 ходов! Восстанови метро!</div>
+<div class="currency-display">🫙 <span id="menuCurrency">0</span></div>
+<button class="menu-btn primary" id="playBtn">🎮 Играть</button>
+<button class="menu-btn" id="shopBtn">🛒 Магазин</button>
+<button class="menu-btn" id="metroBtn">🚇 Метро 2033</button>
+</div>
+<div class="game-screen" id="gameScreen">
+<div class="header">
+<div>
+<span class="level-info">📊 Уровень <span id="levelDisplay">1</span></span>
+<span class="progress">🎯 <span id="targetDisplay">0</span> / <span id="totalTargetDisplay">5</span></span>
+<span class="moves">👣 Ходы: <span id="movesDisplay">35</span></span>
+</div>
+<div>
+<span style="margin-right:10px">🫙 <span id="gameCurrency">0</span></span>
+<button class="back-btn" id="backToMenuBtn">✕ Меню</button>
+</div>
+</div>
+<div class="board" id="board"></div>
+</div>
+</div>
+
+<script>
+(function() {
+    const R = 8, C = 8;
+    const S = ['🍎','🍊','🍇','🍉','🍓','🍋','🥝'];
+    const V = '🏺', B = '💥';
+    const MAX_MOVES = 35, BPL = 100;
+
+    let b = [];
+    let cur = parseInt(localStorage.getItem('bottleCurrency')) || 0;
+    let lv = parseInt(localStorage.getItem('currentLevel')) || 1;
+    let isFruitLevel = true;
+    let target = 45;
+    let p = 0;
+    let m = MAX_MOVES;
+    let sr = -1, sc = -1;
+    let proc = false;
+
+    const ST = [
+        { id: 'vdnh', name: 'ВДНХ', cost: 50, bonus: { moves: 1 } },
+        { id: 'sokol', name: 'Сокол', cost: 150, bonus: { moves: 1 } },
+        { id: 'park', name: 'Парк Культуры', cost: 300, bonus: { moves: 2 } },
+        { id: 'kiev', name: 'Киевская', cost: 500, bonus: { bottles: 0.05 } },
+        { id: 'arbat', name: 'Арбатская', cost: 800, bonus: { bottles: 0.1 } },
+        { id: 'ring', name: 'Кольцевая', cost: 1200, bonus: { moves: 3 } }
+    ];
+    let owned = JSON.parse(localStorage.getItem('metroStations')) || [];
+
+    function getBonusMoves() {
+        let t = 0;
+        for (const id of owned) {
+            const s = ST.find(st => st.id === id);
+            if (s && s.bonus.moves) t += s.bonus.moves;
+        }
+        return t;
+    }
+
+    function getBonusBottles() {
+        let t = 1;
+        for (const id of owned) {
+            const s = ST.find(st => st.id === id);
+            if (s && s.bonus.bottles) t += s.bonus.bottles;
+        }
+        return t;
+    }
+
+    function getStationCost(id) {
+        const s = ST.find(st => st.id === id);
+        const cnt = owned.filter(st => st === id).length;
+        return Math.round(s.cost * (1 + cnt * 0.2));
+    }
+
+    function getTarget() {
+        const base = isFruitLevel ? 45 : 4;
+        const growth = isFruitLevel ? 5 : 1;
+        const max = isFruitLevel ? 120 : 15;
+        return Math.min(base + lv * growth, max);
+    }
+
+    const be = document.getElementById('board');
+    const ld = document.getElementById('levelDisplay');
+    const td = document.getElementById('targetDisplay');
+    const ttd = document.getElementById('totalTargetDisplay');
+    const md = document.getElementById('movesDisplay');
+    const gce = document.getElementById('gameCurrency');
+    const mce = document.getElementById('menuCurrency');
+    const ms = document.getElementById('menuScreen');
+    const gs = document.getElementById('gameScreen');
+
+    function u() {
+        localStorage.setItem('bottleCurrency', cur);
+        localStorage.setItem('currentLevel', lv);
+        if (gce) gce.textContent = cur;
+        if (mce) mce.textContent = cur;
+        if (ld) ld.textContent = lv;
+        if (td) td.textContent = p;
+        if (ttd) ttd.textContent = target;
+        if (md) md.textContent = m;
+    }
+
+    function createBoard() {
+        isFruitLevel = lv % 2 === 1;
+        target = getTarget();
+        const nb = [];
+        for (let r = 0; r < R; r++) {
+            const row = [];
+            for (let c = 0; c < C; c++) {
+                if (!isFruitLevel && Math.random() < 0.15 && r > 0 && r < R - 1 && c > 0 && c < C - 1) {
+                    row.push(V);
+                } else {
+                    let sym, a = 0;
+                    do {
+                        sym = S[Math.floor(Math.random() * S.length)];
+                        a++;
+                        if (a > 50) break;
+                    } while (
+                        (r >= 2 && nb[r-1][c] === sym && nb[r-2][c] === sym) ||
+                        (c >= 2 && row[c-1] === sym && row[c-2] === sym)
+                    );
+                    row.push(sym);
+                }
+            }
+            nb.push(row);
+        }
+        return nb;
+    }
+
+    function findMatches(d) {
+        const m = new Set();
+        const g = [];
+        for (let r = 0; r < R; r++) {
+            let c = 0;
+            while (c < C) {
+                const sym = d[r][c];
+                if (sym === null || sym === B || sym === V) { c++; continue; }
+                let len = 1;
+                while (c + len < C && d[r][c+len] === sym) len++;
+                if (len >= 3) {
+                    const cells = [];
+                    for (let i = 0; i < len; i++) cells.push(r + ',' + (c+i));
+                    g.push({ symbol: sym, cells, length: len });
+                    for (const k of cells) m.add(k);
+                }
+                c += len;
+            }
+        }
+        for (let c = 0; c < C; c++) {
+            let r = 0;
+            while (r < R) {
+                const sym = d[r][c];
+                if (sym === null || sym === B || sym === V) { r++; continue; }
+                let len = 1;
+                while (r + len < R && d[r+len][c] === sym) len++;
+                if (len >= 3) {
+                    const cells = [];
+                    for (let i = 0; i < len; i++) cells.push((r+i) + ',' + c);
+                    g.push({ symbol: sym, cells, length: len });
+                    for (const k of cells) m.add(k);
+                }
+                r += len;
+            }
+        }
+        return { matches: m, groups: g };
+    }
+
+    function ab(row, col) {
+        const d = new Set();
+        for (let c = 0; c < C; c++) {
+            if (b[row][c] !== null && b[row][c] !== B) d.add(row + ',' + c);
+        }
+        d.add(row + ',' + col);
+        return d;
+    }
+
+    function rb(fall, mset, eset, bcset) {
+        if (!be) return;
+        be.innerHTML = '';
+        for (let r = 0; r < R; r++) {
+            for (let c = 0; c < C; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                const v = b[r][c];
+                cell.textContent = v || '';
+                if (v === null) cell.classList.add('empty');
+                if (v === B) cell.classList.add('bomb');
+                if (v === V) cell.classList.add('vase');
+                if (isFruitLevel && v !== null && v !== B && v !== V) cell.classList.add('fruit');
+                if (sr === r && sc === c) cell.classList.add('selected');
+                if (mset && mset.has(r+','+c)) cell.classList.add('matched');
+                if (eset && eset.has(r+','+c)) cell.classList.add('exploding');
+                if (bcset && bcset.has(r+','+c)) cell.classList.add('bomb-created');
+                if (fall && v !== null && v !== B) cell.classList.add('falling');
+                cell.dataset.row = r;
+                cell.dataset.col = c;
+                cell.addEventListener('click', onClick);
+                be.appendChild(cell);
+            }
+        }
+        u();
+    }
+
+    function slp(ms) {
+        return new Promise(r => setTimeout(r, ms));
+    }
+
+    async function pmb(add) {
+        while (true) {
+            const { matches, groups } = findMatches(b);
+            let beff = new Set();
+            let bc = new Set();
+            for (const g of groups) {
+                if (g.length >= 4) {
+                    const mid = Math.floor(g.cells.length / 2);
+                    const [mr, mc] = g.cells[mid].split(',').map(Number);
+                    b[mr][mc] = B;
+                    bc.add(mr + ',' + mc);
+                }
+            }
+            for (let r = 0; r < R; r++) {
+                for (let c = 0; c < C; c++) {
+                    if (b[r][c] === B) {
+                        const e = ab(r, c);
+                        for (const k of e) beff.add(k);
+                    }
+                }
+            }
+            const all = new Set([...matches, ...beff]);
+            if (all.size === 0 && bc.size === 0) break;
+
+            let cnt = 0;
+            if (add && matches.size > 0) {
+                for (const key of matches) {
+                    const [r, c] = key.split(',').map(Number);
+                    const neighbors = [[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
+                    for (const [nr, nc] of neighbors) {
+                        if (nr >= 0 && nr < R && nc >= 0 && nc < C) {
+                            if (isFruitLevel && b[nr][nc] !== null && b[nr][nc] !== B && b[nr][nc] !== V) {
+                                cnt++;
+                                b[nr][nc] = null;
+                            } else if (!isFruitLevel && b[nr][nc] === V) {
+                                cnt++;
+                                b[nr][nc] = null;
+                            }
+                        }
+                    }
+                }
+                p += cnt;
+            }
+
+            rb(false, matches, beff, bc);
+            await slp(500);
+
+            for (const k of all) {
+                const [r, c] = k.split(',').map(Number);
+                b[r][c] = null;
+            }
+
+            for (let c = 0; c < C; c++) {
+                let wr = R - 1;
+                for (let r = R - 1; r >= 0; r--) {
+                    if (b[r][c] !== null) {
+                        b[wr][c] = b[r][c];
+                        if (wr !== r) b[r][c] = null;
+                        wr--;
+                    }
+                }
+                for (let r = wr; r >= 0; r--) {
+                    if (!isFruitLevel && Math.random() < 0.15 && r > 0 && r < R - 1 && c > 0 && c < C - 1) {
+                        b[r][c] = V;
+                    } else {
+                        b[r][c] = S[Math.floor(Math.random() * S.length)];
+                    }
+                }
+            }
+
+            if (add) m--;
+            u();
+            rb(true);
+            await slp(400);
+        }
+
+        if (p >= target) {
+            await lc();
+            return;
+        }
+        if (m <= 0) {
+            await go();
+            return;
+        }
+    }
+
+    async function lc() {
+        proc = true;
+        cur += Math.round(BPL * getBonusBottles());
+        u();
+        const modal = document.createElement('div');
+        modal.innerHTML = '<div class="metro-content" style="text-align:center"><h2>🎉 Уровень пройден!</h2><p>Получено 🫙 ' + Math.round(BPL * getBonusBottles()) + ' банок!</p><button id="nextLevelBtn" style="background:#f9ca24;color:#1a1a2e;border:none;padding:12px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px">➡️ Следующий уровень</button></div>';
+        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;';
+        document.body.appendChild(modal);
+
+        await new Promise(r => {
+            const btn = document.getElementById('nextLevelBtn');
+            if (btn) {
+                btn.addEventListener('click', () => { modal.remove(); r(); });
+            } else {
+                r();
+            }
+        });
+
+        lv++;
+        p = 0;
+        m = MAX_MOVES + getBonusMoves();
+        b = createBoard();
+        let mf = findMatches(b).matches;
+        while (mf.size > 0) {
+            for (const k of mf) {
+                const [r, c] = k.split(',').map(Number);
+                b[r][c] = S[Math.floor(Math.random() * S.length)];
+            }
+            mf = findMatches(b).matches;
+        }
+        if (!hvm()) shuffle();
+        sr = -1; sc = -1;
+        rb(false);
+        u();
+        proc = false;
+    }
+
+    async function go() {
+        proc = true;
+        const modal = document.createElement('div');
+        modal.innerHTML = '<div class="metro-content" style="text-align:center"><h2 style="color:#e74c3c;">💀 Ходы закончились!</h2><p>Попробуйте снова.</p><button id="retryBtn" style="background:#e74c3c;color:#fff;border:none;padding:12px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px">🔄 Попробовать снова</button></div>';
+        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;';
+        document.body.appendChild(modal);
+
+        await new Promise(r => {
+            const btn = document.getElementById('retryBtn');
+            if (btn) {
+                btn.addEventListener('click', () => { modal.remove(); r(); });
+            } else {
+                r();
+            }
+        });
+
+        lv = Math.max(1, lv - 1);
+        p = 0;
+        m = MAX_MOVES + getBonusMoves();
+        b = createBoard();
+        let mf = findMatches(b).matches;
+        while (mf.size > 0) {
+            for (const k of mf) {
+                const [r, c] = k.split(',').map(Number);
+                b[r][c] = S[Math.floor(Math.random() * S.length)];
+            }
+            mf = findMatches(b).matches;
+        }
+        if (!hvm()) shuffle();
+        sr = -1; sc = -1;
+        rb(false);
+        u();
+        proc = false;
+    }
+
+    function hvm() {
+        for (let r = 0; r < R; r++) {
+            for (let c = 0; c < C; c++) {
+                const v = b[r][c];
+                if (v === null || v === B || v === V) continue;
+                if (c < C - 1 && b[r][c+1] !== B && b[r][c+1] !== V) {
+                    [b[r][c], b[r][c+1]] = [b[r][c+1], b[r][c]];
+                    if (findMatches(b).matches.size > 0) {
+                        [b[r][c], b[r][c+1]] = [b[r][c+1], b[r][c]];
+                        return true;
+                    }
+                    [b[r][c], b[r][c+1]] = [b[r][c+1], b[r][c]];
+                }
+                if (r < R - 1 && b[r+1][c] !== B && b[r+1][c] !== V) {
+                    [b[r][c], b[r+1][c]] = [b[r+1][c], b[r][c]];
+                    if (findMatches(b).matches.size > 0) {
+                        [b[r][c], b[r+1][c]] = [b[r+1][c], b[r][c]];
+                        return true;
+                    }
+                    [b[r][c], b[r+1][c]] = [b[r+1][c], b[r][c]];
+                }
+            }
+        }
+        return false;
+   
