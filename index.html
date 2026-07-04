@@ -15,58 +15,45 @@ body{min-height:100vh;background:#1a1a24;display:flex;justify-content:center;ali
 .currency-item span{color:#f1c40f}
 .energy-bar-wrap{flex:1;min-width:80px;height:20px;background:rgba(0,0,0,0.5);border-radius:10px;overflow:hidden;position:relative}
 .energy-bar-fill{height:100%;background:linear-gradient(90deg,#f39c12,#f1c40f);border-radius:10px;transition:width 0.3s}
-.energy-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10px;color:#fff;font-weight:700;text-shadow:0 0 3px #000}
+.energy-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10px;color:#fff;font-weight:700}
 .main-content{flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
 .menu-screen{display:flex;flex-direction:column;align-items:center;gap:12px;padding:15px 10px}
 .menu-screen h1{color:#f1c40f;font-size:24px;text-align:center}
-.menu-screen .subtitle{color:#aaa;font-size:13px;text-align:center}
-.play-btn{background:#f1c40f;border:none;color:#1a1a2e;padding:15px 50px;border-radius:40px;font-size:22px;font-weight:700;cursor:pointer;transition:0.2s;touch-action:manipulation;box-shadow:0 4px 15px rgba(241,196,15,0.4)}
-.play-btn:hover{transform:scale(1.05)}
-.play-btn:active{transform:scale(0.95)}
+.play-btn{background:#f1c40f;border:none;color:#1a1a2e;padding:15px 50px;border-radius:40px;font-size:22px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(241,196,15,0.4)}
 .daily-offer{background:#c0392b;border-radius:15px;padding:12px;text-align:center;color:#eee;margin-top:5px}
-.daily-offer h3{font-size:14px;margin-bottom:6px}
-.daily-offer p{font-size:13px;margin-bottom:8px;color:#aaa}
-.daily-offer button{background:#f1c40f;border:none;color:#1a1a2e;padding:8px 20px;border-radius:20px;font-weight:700;cursor:pointer;font-size:14px;transition:0.2s}
-.daily-offer button:disabled{background:#555;color:#888;cursor:not-allowed}
+.daily-offer button{background:#f1c40f;border:none;color:#1a1a2e;padding:8px 20px;border-radius:20px;font-weight:700;cursor:pointer;font-size:14px}
+.daily-offer button:disabled{background:#555;color:#888}
 .energy-section{text-align:center;padding:5px 0}
-.energy-section .progress-wrap{width:80%;height:18px;background:rgba(255,255,255,0.1);border-radius:9px;overflow:hidden;margin:8px auto;border:1px solid rgba(255,255,255,0.2)}
-.energy-section .progress-fill{height:100%;background:linear-gradient(90deg,#3498db,#2ecc71);border-radius:9px;transition:width 0.5s}
-.energy-section .energy-label{font-size:12px;color:#aaa}
+.energy-section .progress-wrap{width:80%;height:18px;background:rgba(255,255,255,0.1);border-radius:9px;overflow:hidden;margin:8px auto}
+.energy-section .progress-fill{height:100%;background:linear-gradient(90deg,#3498db,#2ecc71);border-radius:9px}
 .game-screen{display:none;flex-direction:column;gap:6px;flex:1}
-.game-header{display:flex;justify-content:space-between;align-items:center;color:#eee;font-size:13px;font-weight:700;flex-wrap:wrap;gap:4px;background:#c0392b;border-radius:12px;padding:8px 12px}
+.game-header{display:flex;justify-content:space-between;align-items:center;color:#eee;font-size:13px;font-weight:700;background:#c0392b;border-radius:12px;padding:8px 12px}
 .game-header .moves{background:rgba(0,0,0,0.3);padding:4px 10px;border-radius:15px;color:#f1c40f}
 .game-header button{background:rgba(0,0,0,0.4);border:none;color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;cursor:pointer}
 .abilities-bar{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
 .abilities-bar button{font-size:10px;padding:4px 8px;background:#8b5cf6;border:none;color:#fff;border-radius:12px;cursor:pointer}
 .abilities-bar .shop-in-game{background:#f1c40f;color:#1a1a2e;font-weight:700}
 .board{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;background:#0f3460;padding:5px;border-radius:10px;max-width:100%;aspect-ratio:1/1}
-.cell{aspect-ratio:1/1;background:#1a1a2e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.4);transition:0.08s;position:relative;touch-action:manipulation}
+.cell{aspect-ratio:1/1;background:#1a1a2e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.4)}
 .cell.selected{outline:2px solid #f1c40f;outline-offset:-2px;transform:scale(0.92)}
-.cell.bomb{background:radial-gradient(circle,#f39c12,#e74c3c);color:#fff;text-shadow:0 0 10px rgba(255,255,255,0.5)}
+.cell.bomb{background:radial-gradient(circle,#f39c12,#e74c3c);color:#fff}
 .cell.vase{background:#8b5cf6;color:#fff}
 .cell.fruit{background:#2ecc71;color:#fff}
-.empty{background:#0a0a1a;box-shadow:none;cursor:default}
+.empty{background:#0a0a1a;cursor:default}
 .cell.falling{animation:dropIn 0.25s ease-out}
 .cell.matched{animation:matchPop 0.25s ease-out forwards}
-.cell.exploding{animation:explode 0.35s ease-out forwards}
-.cell.bomb-created{animation:bombCreate 0.35s ease-out forwards}
-@keyframes dropIn{0%{transform:translateY(-60px) scale(0.7);opacity:0}70%{transform:translateY(5px) scale(1.02);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
-@keyframes matchPop{0%{transform:scale(1);opacity:1}50%{transform:scale(1.2) rotate(8deg);opacity:0.8}100%{transform:scale(0);opacity:0}}
-@keyframes explode{0%{transform:scale(1);opacity:1;background:#f1c40f}50%{transform:scale(1.5);opacity:0.8;background:#e74c3c}100%{transform:scale(0);opacity:0}}
-@keyframes bombCreate{0%{transform:scale(0);opacity:0;background:#f1c40f}50%{transform:scale(1.3);opacity:0.8;background:#e74c3c}100%{transform:scale(1);opacity:1;background:radial-gradient(circle,#f39c12,#e74c3c)}}
-.bottom-nav{background:#c0392b;border-radius:15px;padding:8px 5px;display:flex;justify-content:space-around;align-items:center;gap:2px}
-.nav-btn{background:transparent;border:none;color:#fff;font-size:11px;cursor:pointer;padding:6px 4px;border-radius:10px;transition:0.2s;display:flex;flex-direction:column;align-items:center;gap:2px;touch-action:manipulation;flex:1;text-align:center}
+@keyframes dropIn{0%{transform:translateY(-60px) scale(0.7);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}
+@keyframes matchPop{0%{transform:scale(1)}100%{transform:scale(0)}}
+.bottom-nav{background:#c0392b;border-radius:15px;padding:8px 5px;display:flex;justify-content:space-around}
+.nav-btn{background:transparent;border:none;color:#fff;font-size:11px;cursor:pointer;padding:6px 4px;border-radius:10px;display:flex;flex-direction:column;align-items:center;flex:1}
 .nav-btn.active{background:rgba(255,255,255,0.2);font-weight:700}
-.nav-btn .nav-icon{font-size:18px}
 .metro-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
 .metro-content{background:#16213e;padding:20px;border-radius:20px;max-width:400px;width:100%;max-height:80vh;overflow-y:auto;color:#eee}
 .metro-content h2{color:#f1c40f;text-align:center;margin-bottom:15px}
-.metro-content .station{background:#0f3460;padding:12px;border-radius:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:4px}
-.metro-content .station .bonus{font-size:13px;color:#a855f7}
+.metro-content .station{background:#0f3460;padding:12px;border-radius:12px;margin-bottom:10px}
 .metro-content .station button{background:#f1c40f;border:none;padding:6px 16px;border-radius:20px;font-weight:700;cursor:pointer;color:#1a1a2e;font-size:14px;margin-top:4px}
-.metro-content .station button:disabled{background:#555;color:#888;cursor:not-allowed}
+.metro-content .station button:disabled{background:#555;color:#888}
 .metro-content .close-btn{background:#e74c3c;border:none;color:#fff;padding:10px 20px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;width:100%;margin-top:15px}
-@media(max-width:480px){.menu-screen h1{font-size:20px}.play-btn{font-size:18px;padding:12px 40px}.cell{font-size:16px}.nav-btn{font-size:9px}}
 </style>
 </head>
 <body>
@@ -81,28 +68,25 @@ body{min-height:100vh;background:#1a1a24;display:flex;justify-content:center;ali
 <div class="energy-bar-fill" id="energyFill" style="width:0%"></div>
 <div class="energy-text" id="energyText">0/1000</div>
 </div>
-<button style="background:transparent;border:none;font-size:18px;cursor:pointer;color:#fff;padding:4px">⚙️</button>
 </div>
 <div class="main-content" id="mainContent">
 <div class="menu-screen" id="menuScreen">
 <h1>🍎 Fruit Garden Match</h1>
-<div class="subtitle">Три в ряд с экономикой!</div>
 <div class="energy-section">
-<div class="energy-label">⚡ Энергия: <span id="menuEnergyText">0/1000</span></div>
+<div>⚡ <span id="menuEnergyText">0/1000</span></div>
 <div class="progress-wrap"><div class="progress-fill" id="menuEnergyFill" style="width:0%"></div></div>
 </div>
 <button class="play-btn" id="playBtn">🎮 ИГРАТЬ</button>
 <div class="daily-offer" id="dailyOffer">
-<h3>🎁 Ежедневное предложение</h3>
 <p id="dailyOfferText">Загрузка...</p>
 <button id="dailyOfferBtn">Забрать</button>
 </div>
 </div>
 <div class="game-screen" id="gameScreen">
 <div class="game-header">
-<div>📊 Ур.<span id="levelDisplay">1</span> 🎯<span id="targetDisplay">0</span>/<span id="totalTargetDisplay">5</span></div>
+<div>Ур.<span id="levelDisplay">1</span> 🎯<span id="targetDisplay">0</span>/<span id="totalTargetDisplay">5</span></div>
 <div class="moves">👣 <span id="movesDisplay">35</span></div>
-<button id="backToMenuBtn">✕</button>
+<button id="backToMenuBtn">✕ Меню</button>
 </div>
 <div class="abilities-bar">
 <button id="useMoves5">➕5 (<span id="countMoves5">0</span>)</button>
@@ -115,11 +99,11 @@ body{min-height:100vh;background:#1a1a24;display:flex;justify-content:center;ali
 </div>
 </div>
 <div class="bottom-nav">
-<button class="nav-btn" id="navShop">🛒<span>Магазин</span></button>
-<button class="nav-btn" id="navTournament">🏆<span>Турнир</span></button>
-<button class="nav-btn active" id="navHome">🏠<span>Главная</span></button>
-<button class="nav-btn" id="navQuests">📋<span>Задания</span></button>
-<button class="nav-btn" id="navMetro">🚇<span>Метро</span></button>
+<button class="nav-btn" id="navShop">🛒</button>
+<button class="nav-btn" id="navTournament">🏆</button>
+<button class="nav-btn active" id="navHome">🏠</button>
+<button class="nav-btn" id="navQuests">📋</button>
+<button class="nav-btn" id="navMetro">🚇</button>
 </div>
 </div>
 <script>
@@ -136,470 +120,53 @@ var dailyData=JSON.parse(localStorage.getItem('dailyOffer'))||{date:'',type:'',c
 var be=document.getElementById('board'),ld=document.getElementById('levelDisplay'),td=document.getElementById('targetDisplay'),ttd=document.getElementById('totalTargetDisplay'),md=document.getElementById('movesDisplay');
 var goldD=document.getElementById('goldDisplay'),bottleD=document.getElementById('bottleDisplay'),energyFill=document.getElementById('energyFill'),energyText=document.getElementById('energyText');
 var menuEnergyFill=document.getElementById('menuEnergyFill'),menuEnergyText=document.getElementById('menuEnergyText'),ms=document.getElementById('menuScreen'),gs=document.getElementById('gameScreen');
- function saveAbilities(){localStorage.setItem('abilities',JSON.stringify(abilities));}
+
+function saveAbilities(){localStorage.setItem('abilities',JSON.stringify(abilities));}
 function getBonusMoves(){var t=0;for(var i=0;i<owned.length;i++){var s=ST.find(function(st){return st.id===owned[i];});if(s&&s.bonus.moves)t+=s.bonus.moves;}return t;}
 function getBonusBottles(){var t=1;for(var i=0;i<owned.length;i++){var s=ST.find(function(st){return st.id===owned[i];});if(s&&s.bonus.bottles)t+=s.bonus.bottles;}return t;}
 function getStationCost(id){var s=ST.find(function(st){return st.id===id;});var cnt=owned.filter(function(st){return st===id;}).length;return Math.round(s.cost*(1+cnt*0.2));}
 function getTarget(){var base=isFruitLevel?45:4,growth=isFruitLevel?5:1,max=isFruitLevel?120:15;return Math.min(base+lv*growth,max);}
 function updateEnergyUI(){var tier=energyTier<ENERGY_TIERS.length?ENERGY_TIERS[energyTier]:ENERGY_TIERS[ENERGY_TIERS.length-1];var pct=Math.min(100,(energy/tier)*100);if(energyFill)energyFill.style.width=pct+'%';if(energyText)energyText.textContent=energy+'/'+tier;if(menuEnergyFill)menuEnergyFill.style.width=pct+'%';if(menuEnergyText)menuEnergyText.textContent=energy+'/'+tier;}
-function addEnergy(amount){energy+=amount;var tier=energyTier<ENERGY_TIERS.length?ENERGY_TIERS[energyTier]:ENERGY_TIERS[ENERGY_TIERS.length-1];while(energy>=tier){energy-=tier;var reward=energyTier<ENERGY_REWARDS.length?ENERGY_REWARDS[energyTier]:500;cur+=reward;if(energyTier<ENERGY_TIERS.length-1)energyTier++;tier=energyTier<ENERGY_TIERS.length?ENERGY_TIERS[energyTier]:ENERGY_TIERS[ENERGY_TIERS.length-1];alert('⚡ Энергия заполнена! Получено '+reward+' 🫙 банок!'+(energyTier>=ENERGY_TIERS.length-1?' 🎁 Редкий буст!':''));}localStorage.setItem('energy',energy);localStorage.setItem('energyTier',energyTier);updateEnergyUI();}
-function generateDailyOffer(){var today=new Date().toDateString();if(dailyData.date!==today){dailyData={date:today,type:Math.random()<0.5?'bottles':'moves',claimed:false};localStorage.setItem('dailyOffer',JSON.stringify(dailyData));}var ot=document.getElementById('dailyOfferText'),ob=document.getElementById('dailyOfferBtn');if(ot&&ob){if(dailyData.claimed){ot.textContent='✅ Уже забрано! Завтра новое предложение.';ob.disabled=true;ob.textContent='Забрано';}else{if(dailyData.type==='bottles'){ot.textContent='Получи 100 🫙 за '+DAILY_COST+' 🪙';}else{ot.textContent='Получи +10 ходов за '+DAILY_COST+' 🪙';}ob.disabled=gold<DAILY_COST;ob.textContent=gold<DAILY_COST?'Не хватает монет':'Забрать';}}}
-function claimDailyOffer(){if(dailyData.claimed)return;if(gold<DAILY_COST){alert('❌ Не хватает монет!');return;}gold-=DAILY_COST;dailyData.claimed=true;if(dailyData.type==='bottles'){cur+=100;alert('✅ Получено 100 🫙 банок!');}else{abilities.moves10=(abilities.moves10||0)+1;saveAbilities();alert('✅ Получено +10 ходов (способность)!');}localStorage.setItem('dailyOffer',JSON.stringify(dailyData));localStorage.setItem('gold',gold);u();generateDailyOffer();}
+function addEnergy(amount){energy+=amount;var tier=energyTier<ENERGY_TIERS.length?ENERGY_TIERS[energyTier]:ENERGY_TIERS[ENERGY_TIERS.length-1];while(energy>=tier){energy-=tier;var reward=energyTier<ENERGY_REWARDS.length?ENERGY_REWARDS[energyTier]:500;cur+=reward;if(energyTier<ENERGY_TIERS.length-1)energyTier++;tier=energyTier<ENERGY_TIERS.length?ENERGY_TIERS[energyTier]:ENERGY_TIERS[ENERGY_TIERS.length-1];alert('⚡ Энергия заполнена! +'+reward+' 🫙');}localStorage.setItem('energy',energy);localStorage.setItem('energyTier',energyTier);updateEnergyUI();}
+function generateDailyOffer(){var today=new Date().toDateString();if(dailyData.date!==today){dailyData={date:today,type:Math.random()<0.5?'bottles':'moves',claimed:false};localStorage.setItem('dailyOffer',JSON.stringify(dailyData));}var ot=document.getElementById('dailyOfferText'),ob=document.getElementById('dailyOfferBtn');if(ot&&ob){if(dailyData.claimed){ot.textContent='✅ Уже забрано!';ob.disabled=true;ob.textContent='Забрано';}else{ot.textContent=dailyData.type==='bottles'?'100 🫙 за '+DAILY_COST+' 🪙':'+10 ходов за '+DAILY_COST+' 🪙';ob.disabled=gold<DAILY_COST;ob.textContent=gold<DAILY_COST?'Нужно '+DAILY_COST+' 🪙':'Забрать';}}}
+function claimDailyOffer(){if(dailyData.claimed)return;if(gold<DAILY_COST){alert('❌ Не хватает монет!');return;}gold-=DAILY_COST;dailyData.claimed=true;if(dailyData.type==='bottles'){cur+=100;alert('✅ +100 🫙!');}else{abilities.moves10=(abilities.moves10||0)+1;saveAbilities();alert('✅ +10 ходов!');}localStorage.setItem('dailyOffer',JSON.stringify(dailyData));localStorage.setItem('gold',gold);u();generateDailyOffer();}
 function u(){localStorage.setItem('bottleCurrency',cur);localStorage.setItem('gold',gold);localStorage.setItem('currentLevel',lv);if(goldD)goldD.textContent=gold;if(bottleD)bottleD.textContent=cur;if(ld)ld.textContent=lv;if(td)td.textContent=p;if(ttd)ttd.textContent=target;if(md)md.textContent=m;updateEnergyUI();var cm5=document.getElementById('countMoves5'),cm10=document.getElementById('countMoves10'),cb=document.getElementById('countBombs'),cs=document.getElementById('countShuffles');if(cm5)cm5.textContent=abilities.moves5||0;if(cm10)cm10.textContent=abilities.moves10||0;if(cb)cb.textContent=abilities.bombs||0;if(cs)cs.textContent=abilities.shuffles||0;}
 function createBoard(){isFruitLevel=lv%2===1;target=getTarget();var nb=[];for(var r=0;r<R;r++){var row=[];for(var c=0;c<C;c++){if(!isFruitLevel&&Math.random()<0.15&&r>0&&r<R-1&&c>0&&c<C-1){row.push(V);}else{var sym,a=0;do{sym=S[Math.floor(Math.random()*S.length)];a++;if(a>50)break;}while((r>=2&&nb[r-1][c]===sym&&nb[r-2][c]===sym)||(c>=2&&row[c-1]===sym&&row[c-2]===sym));row.push(sym);}}nb.push(row);}return nb;}
 function findMatches(d){var m=new Set(),g=[];for(var r=0;r<R;r++){var c=0;while(c<C){var sym=d[r][c];if(sym===null||sym===B||sym===V){c++;continue;}var len=1;while(c+len<C&&d[r][c+len]===sym)len++;if(len>=3){var cells=[];for(var i=0;i<len;i++)cells.push(r+','+(c+i));g.push({symbol:sym,cells:cells,length:len});for(var i2=0;i2<cells.length;i2++)m.add(cells[i2]);}c+=len;}}for(var c2=0;c2<C;c2++){var r2=0;while(r2<R){var sym2=d[r2][c2];if(sym2===null||sym2===B||sym2===V){r2++;continue;}var len2=1;while(r2+len2<R&&d[r2+len2][c2]===sym2)len2++;if(len2>=3){var cells2=[];for(var j=0;j<len2;j++)cells2.push((r2+j)+','+c2);g.push({symbol:sym2,cells:cells2,length:len2});for(var j2=0;j2<cells2.length;j2++)m.add(cells2[j2]);}r2+=len2;}}return{matches:m,groups:g};}
 function ab(row,col){var d=new Set();for(var c=0;c<C;c++){if(b[row][c]!==null&&b[row][c]!==B)d.add(row+','+c);}d.add(row+','+col);return d;}
 function rb(fall,mset,eset,bcset){if(!be)return;be.innerHTML='';for(var r=0;r<R;r++){for(var c=0;c<C;c++){var cell=document.createElement('div');cell.className='cell';var v=b[r][c];cell.textContent=v||'';if(v===null)cell.classList.add('empty');if(v===B)cell.classList.add('bomb');if(v===V)cell.classList.add('vase');if(isFruitLevel&&v!==null&&v!==B&&v!==V)cell.classList.add('fruit');if(sr===r&&sc===c)cell.classList.add('selected');if(mset&&mset.has(r+','+c))cell.classList.add('matched');if(eset&&eset.has(r+','+c))cell.classList.add('exploding');if(bcset&&bcset.has(r+','+c))cell.classList.add('bomb-created');if(fall&&v!==null&&v!==B)cell.classList.add('falling');cell.dataset.row=r;cell.dataset.col=c;cell.addEventListener('click',onClick);be.appendChild(cell);}}u();}
 function slp(ms){return new Promise(function(r){setTimeout(r,ms);});}
-    async function pmb(add) {
-    while (true) {
-        var result = findMatches(b);
-        var matches = result.matches;
-        var groups = result.groups;
-        var beff = new Set(), bc = new Set();
-        
-        for (var gi = 0; gi < groups.length; gi++) {
-            var g = groups[gi];
-            if (g.length >= 4) {
-                var mid = Math.floor(g.cells.length / 2);
-                var coords = g.cells[mid].split(',');
-                var mr = parseInt(coords[0]);
-                var mc = parseInt(coords[1]);
-                b[mr][mc] = B;
-                bc.add(mr + ',' + mc);
-            }
-        }
-        
-        for (var r = 0; r < R; r++) {
-            for (var c = 0; c < C; c++) {
-                if (b[r][c] === B) {
-                    var e = ab(r, c);
-                    e.forEach(function(k) { beff.add(k); });
-                }
-            }
-        }
-        
-        var all = new Set();
-        matches.forEach(function(k) { all.add(k); });
-        beff.forEach(function(k) { all.add(k); });
-        
-        if (all.size === 0 && bc.size === 0) break;
+ async function pmb(add){while(true){var result=findMatches(b);var matches=result.matches;var groups=result.groups;var beff=new Set(),bc=new Set();for(var gi=0;gi<groups.length;gi++){var g=groups[gi];if(g.length>=4){var mid=Math.floor(g.cells.length/2);var coords=g.cells[mid].split(',');var mr=parseInt(coords[0]);var mc=parseInt(coords[1]);b[mr][mc]=B;bc.add(mr+','+mc);}}for(var r=0;r<R;r++){for(var c=0;c<C;c++){if(b[r][c]===B){var e=ab(r,c);e.forEach(function(k){beff.add(k);});}}}var all=new Set();matches.forEach(function(k){all.add(k);});beff.forEach(function(k){all.add(k);});if(all.size===0&&bc.size===0)break;var cnt=0;if(add&&matches.size>0){matches.forEach(function(key){var coords=key.split(',');var r=parseInt(coords[0]);var c=parseInt(coords[1]);var neighbors=[[r-1,c],[r+1,c],[r,c-1],[r,c+1]];for(var ni=0;ni<neighbors.length;ni++){var nr=neighbors[ni][0];var nc=neighbors[ni][1];if(nr>=0&&nr<R&&nc>=0&&nc<C){if(isFruitLevel&&b[nr][nc]!==null&&b[nr][nc]!==B&&b[nr][nc]!==V){cnt++;b[nr][nc]=null;}else if(!isFruitLevel&&b[nr][nc]===V){cnt++;b[nr][nc]=null;}}}});p+=cnt;}rb(false,matches,beff,bc);await slp(500);all.forEach(function(k){var coords=k.split(',');var r=parseInt(coords[0]);var c=parseInt(coords[1]);b[r][c]=null;});for(var c2=0;c2<C;c2++){var wr=R-1;for(var r2=R-1;r2>=0;r2--){if(b[r2][c2]!==null){b[wr][c2]=b[r2][c2];if(wr!==r2)b[r2][c2]=null;wr--;}}for(var r3=wr;r3>=0;r3--){if(!isFruitLevel&&Math.random()<0.15&&r3>0&&r3<R-1&&c2>0&&c2<C-1){b[r3][c2]=V;}else{b[r3][c2]=S[Math.floor(Math.random()*S.length)];}}}if(add)m--;u();rb(true);await slp(400);}if(p>=target){await lc();return;}if(m<=0){await go();return;}}
+async function lc(){proc=true;gold+=GOLD_PER_LEVEL;cur+=Math.round(BOTTLES_PER_LEVEL*getBonusBottles());if(m>0){addEnergy(m*ENERGY_PER_MOVE);}u();var modal=document.createElement('div');modal.innerHTML='<div class="metro-content" style="text-align:center"><h2>🎉 Уровень пройден!</h2><p>🪙 +'+GOLD_PER_LEVEL+' | 🫙 +'+Math.round(BOTTLES_PER_LEVEL*getBonusBottles())+'</p><p>⚡ +'+(m*ENERGY_PER_MOVE)+' энергии</p><button id="nextLevelBtn" style="background:#f9ca24;color:#1a1a2e;border:none;padding:12px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px">➡️ Следующий уровень</button></div>';modal.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;';document.body.appendChild(modal);await new Promise(function(resolve){var btn=document.getElementById('nextLevelBtn');if(btn){btn.addEventListener('click',function(){modal.remove();resolve();});}else{resolve();}});lv++;p=0;m=MAX_MOVES+getBonusMoves();b=createBoard();var mf=findMatches(b).matches;while(mf.size>0){mf.forEach(function(k){var coords=k.split(',');b[parseInt(coords[0])][parseInt(coords[1])]=S[Math.floor(Math.random()*S.length)];});mf=findMatches(b).matches;}if(!hvm())shuffle();sr=-1;sc=-1;rb(false);u();proc=false;}
+async function go(){proc=true;var modal=document.createElement('div');modal.innerHTML='<div class="metro-content" style="text-align:center"><h2 style="color:#e74c3c;">💀 Ходы закончились!</h2><button id="retryBtn" style="background:#e74c3c;color:#fff;border:none;padding:12px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px">🔄 Попробовать снова</button></div>';modal.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;';document.body.appendChild(modal);await new Promise(function(resolve){var btn=document.getElementById('retryBtn');if(btn){btn.addEventListener('click',function(){modal.remove();resolve();});}else{resolve();}});lv=Math.max(1,lv-1);p=0;m=MAX_MOVES+getBonusMoves();b=createBoard();var mf=findMatches(b).matches;while(mf.size>0){mf.forEach(function(k){var coords=k.split(',');b[parseInt(coords[0])][parseInt(coords[1])]=S[Math.floor(Math.random()*S.length)];});mf=findMatches(b).matches;}if(!hvm())shuffle();sr=-1;sc=-1;rb(false);u();proc=false;}
+function hvm(){for(var r=0;r<R;r++){for(var c=0;c<C;c++){var v=b[r][c];if(v===null||v===B||v===V)continue;if(c<C-1&&b[r][c+1]!==B&&b[r][c+1]!==V){var tmp=b[r][c];b[r][c]=b[r][c+1];b[r][c+1]=tmp;if(findMatches(b).matches.size>0){tmp=b[r][c];b[r][c]=b[r][c+1];b[r][c+1]=tmp;return true;}tmp=b[r][c];b[r][c]=b[r][c+1];b[r][c+1]=tmp;}if(r<R-1&&b[r+1][c]!==B&&b[r+1][c]!==V){var tmp2=b[r][c];b[r][c]=b[r+1][c];b[r+1][c]=tmp2;if(findMatches(b).matches.size>0){tmp2=b[r][c];b[r][c]=b[r+1][c];b[r+1][c]=tmp2;return true;}tmp2=b[r][c];b[r][c]=b[r+1][c];b[r+1][c]=tmp2;}}}return false;}
+function shuffle(){while(!hvm()){for(var r=0;r<R;r++){for(var c=0;c<C;c++){if(!isFruitLevel&&Math.random()<0.15&&r>0&&r<R-1&&c>0&&c<C-1){b[r][c]=V;}else{b[r][c]=S[Math.floor(Math.random()*S.length)];}}}var mf=findMatches(b).matches;while(mf.size>0){mf.forEach(function(k){var coords=k.split(',');b[parseInt(coords[0])][parseInt(coords[1])]=S[Math.floor(Math.random()*S.length)];});mf=findMatches(b).matches;}}rb(false);}
+function onClick(e){if(proc)return;var r=parseInt(e.currentTarget.dataset.row),c=parseInt(e.currentTarget.dataset.col);var v=b[r][c];if(v===null||v===V)return;if(v===B){b[r][c]=null;var ex=ab(r,c);ex.forEach(function(k){var coords=k.split(',');b[parseInt(coords[0])][parseInt(coords[1])]=null;});rb(false,new Set(),ex);setTimeout(function(){for(var cc=0;cc<C;cc++){var wr=R-1;for(var rr=R-1;rr>=0;rr--){if(b[rr][cc]!==null){b[wr][cc]=b[rr][cc];if(wr!==rr)b[rr][cc]=null;wr--;}}for(var rr2=wr;rr2>=0;rr2--){if(!isFruitLevel&&Math.random()<0.15&&rr2>0&&rr2<R-1&&cc>0&&cc<C-1){b[rr2][cc]=V;}else{b[rr2][cc]=S[Math.floor(Math.random()*S.length)];}}}rb(true);if(!hvm())shuffle();},500);return;}if(sr===-1){sr=r;sc=c;rb(false);return;}if(sr===r&&sc===c){sr=-1;sc=-1;rb(false);return;}var dr=Math.abs(r-sr),dc=Math.abs(c-sc);if((dr===1&&dc===0)||(dr===0&&dc===1)){trySwap(sr,sc,r,c);}else{sr=r;sc=c;rb(false);}}
+async function trySwap(r1,c1,r2,c2){proc=true;m--;u();var tmp=b[r1][c1];b[r1][c1]=b[r2][c2];b[r2][c2]=tmp;var matches=findMatches(b).matches;var hb=false;for(var r=0;r<R;r++){for(var c=0;c<C;c++){if(b[r][c]===B)hb=true;}}if(matches.size>0||hb){sr=-1;sc=-1;await pmb(true);rb(false);}else{tmp=b[r1][c1];b[r1][c1]=b[r2][c2];b[r2][c2]=tmp;sr=-1;sc=-1;rb(false);}proc=false;}
+function showShop(){var html='<div class="metro-content"><h2>🛒 Магазин</h2>';html+='<p style="text-align:center">🪙 '+gold+' | 🫙 '+cur+'</p>';var items=[{id:'moves5',name:'➕ 5 ходов',cost:30,ability:'moves5'},{id:'moves10',name:'➕ 10 ходов',cost:50,ability:'moves10'},{id:'bombs',name:'💥 Бомба',cost:40,ability:'bombs'},{id:'shuffles',name:'🔀 Перемешать',cost:20,ability:'shuffles'}];for(var i=0;i<items.length;i++){var item=items[i];html+='<div class="station"><div><b>'+item.name+'</b> - '+item.cost+' 🫙</div><div>В наличии: '+(abilities[item.ability]||0)+'</div><button data-item="'+item.id+'" class="buy-item-btn">Купить</button></div>';}html+='<button class="close-btn" id="closeShopBtn">✕ Закрыть</button></div>';var modal=document.createElement('div');modal.className='metro-modal';modal.innerHTML=html;document.body.appendChild(modal);modal.querySelectorAll('.buy-item-btn').forEach(function(btn){btn.addEventListener('click',function(){var id=this.dataset.item;var item=items.find(function(i){return i.id===id;});if(item){if(cur<item.cost){alert('❌ Не хватает!');return;}cur-=item.cost;abilities[item.ability]=(abilities[item.ability]||0)+1;saveAbilities();u();modal.remove();showShop();}});});modal.querySelector('#closeShopBtn').addEventListener('click',function(){modal.remove();});}
+function showMetro(){var html='<div class="metro-content"><h2>🚇 Метро 2033</h2>';for(var i=0;i<ST.length;i++){var s=ST[i];var cost=getStationCost(s.id);var cnt=owned.filter(function(st){return st===s.id;}).length;var bonus='';if(s.bonus.moves)bonus+='➕'+s.bonus.moves+' ходов ';if(s.bonus.bottles)bonus+='🍾+'+Math.round(s.bonus.bottles*100)+'% банок';html+='<div class="station"><div><b>'+s.name+'</b> ('+cnt+' шт.) - '+cost+' 🫙</div><div>'+bonus+'</div>';html+=cnt===0?'<button data-station="'+s.id+'" class="buy-station-btn">Купить</button>':'<button disabled>✔ Куплено</button>';html+='</div>';}html+='<button class="close-btn" id="closeMetroBtn">✕ Закрыть</button></div>';var modal=document.createElement('div');modal.className='metro-modal';modal.innerHTML=html;document.body.appendChild(modal);modal.querySelectorAll('.buy-station-btn').forEach(function(btn){btn.addEventListener('click',function(){buyStation(this.dataset.station);});});modal.querySelector('#closeMetroBtn').addEventListener('click',function(){modal.remove();});}
+function buyStation(id){if(proc)return;var cost=getStationCost(id);if(cur<cost){alert('❌ Не хватает!');return;}cur-=cost;owned.push(id);localStorage.setItem('metroStations',JSON.stringify(owned));u();alert('🚇 Куплено!');var em=document.querySelector('.metro-modal');if(em)em.remove();showMetro();}
+function showMenu(){ms.style.display='flex';gs.style.display='none';u();generateDailyOffer();}
+function showGame(){ms.style.display='none';gs.style.display='flex';lv=parseInt(localStorage.getItem('currentLevel'))||1;target=getTarget();p=0;m=MAX_MOVES+getBonusMoves();b=createBoard();var mf=findMatches(b).matches;while(mf.size>0){mf.forEach(function(k){var coords=k.split(',');b[parseInt(coords[0])][parseInt(coords[1])]=S[Math.floor(Math.random()*S.length)];});mf=findMatches(b).matches;}if(!hvm())shuffle();sr=-1;sc=-1;rb(false);u();}
 
-        var cnt = 0;
-        if (add && matches.size > 0) {
-            matches.forEach(function(key) {
-                var coords = key.split(',');
-                var r = parseInt(coords[0]);
-                var c = parseInt(coords[1]);
-                var neighbors = [[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
-                for (var ni = 0; ni < neighbors.length; ni++) {
-                    var nr = neighbors[ni][0];
-                    var nc = neighbors[ni][1];
-                    if (nr >= 0 && nr < R && nc >= 0 && nc < C) {
-                        if (isFruitLevel && b[nr][nc] !== null && b[nr][nc] !== B && b[nr][nc] !== V) {
-                            cnt++;
-                            b[nr][nc] = null;
-                        } else if (!isFruitLevel && b[nr][nc] === V) {
-                            cnt++;
-                            b[nr][nc] = null;
-                        }
-                    }
-                }
-            });
-            p += cnt;
-        }
+document.getElementById('playBtn').addEventListener('click',showGame);
+document.getElementById('backToMenuBtn').addEventListener('click',showMenu);
+document.getElementById('dailyOfferBtn').addEventListener('click',claimDailyOffer);
+document.getElementById('navShop').addEventListener('click',showShop);
+document.getElementById('navHome').addEventListener('click',showMenu);
+document.getElementById('navMetro').addEventListener('click',showMetro);
+document.getElementById('navTournament').addEventListener('click',function(){alert('🏆 Скоро!');});
+document.getElementById('navQuests').addEventListener('click',function(){alert('📋 Скоро!');});
+document.getElementById('useMoves5').addEventListener('click',function(){if(abilities.moves5>0){abilities.moves5--;m+=5;saveAbilities();u();alert('✅ +5 ходов!');}else{alert('❌ Нет!');}});
+document.getElementById('useMoves10').addEventListener('click',function(){if(abilities.moves10>0){abilities.moves10--;m+=10;saveAbilities();u();alert('✅ +10 ходов!');}else{alert('❌ Нет!');}});
+document.getElementById('useBomb').addEventListener('click',function(){if(abilities.bombs>0){abilities.bombs--;saveAbilities();u();alert('💥 Выбери клетку!');proc=true;var bh=function(e){var r=parseInt(e.currentTarget.dataset.row),c=parseInt(e.currentTarget.dataset.col);for(var dr=-1;dr<=1;dr++){for(var dc=-1;dc<=1;dc++){var nr=r+dr,nc=c+dc;if(nr>=0&&nr<R&&nc>=0&&nc<C)b[nr][nc]=null;}}for(var cc=0;cc<C;cc++){var wr=R-1;for(var rr=R-1;rr>=0;rr--){if(b[rr][cc]!==null){b[wr][cc]=b[rr][cc];if(wr!==rr)b[rr][cc]=null;wr--;}}for(var rr2=wr;rr2>=0;rr2--){b[rr2][cc]=S[Math.floor(Math.random()*S.length)];}}rb(true);proc=false;be.querySelectorAll('.cell').forEach(function(cell){cell.removeEventListener('click',bh);});};be.querySelectorAll('.cell').forEach(function(cell){cell.addEventListener('click',bh,{once:true});});}else{alert('❌ Нет!');}});
+document.getElementById('useShuffle').addEventListener('click',function(){if(abilities.shuffles>0){abilities.shuffles--;saveAbilities();shuffle();u();alert('🔀 Готово!');}else{alert('❌ Нет!');}});
+document.getElementById('openShopInGame').addEventListener('click',showShop);
 
-        rb(false, matches, beff, bc);
-        await slp(500);
-
-        all.forEach(function(k) {
-            var coords = k.split(',');
-            var r = parseInt(coords[0]);
-            var c = parseInt(coords[1]);
-            b[r][c] = null;
-        });
-
-        for (var c2 = 0; c2 < C; c2++) {
-            var wr = R - 1;
-            for (var r2 = R - 1; r2 >= 0; r2--) {
-                if (b[r2][c2] !== null) {
-                    b[wr][c2] = b[r2][c2];
-                    if (wr !== r2) b[r2][c2] = null;
-                    wr--;
-                }
-            }
-            for (var r3 = wr; r3 >= 0; r3--) {
-                if (!isFruitLevel && Math.random() < 0.15 && r3 > 0 && r3 < R-1 && c2 > 0 && c2 < C-1) {
-                    b[r3][c2] = V;
-                } else {
-                    b[r3][c2] = S[Math.floor(Math.random() * S.length)];
-                }
-            }
-        }
-
-        if (add) m--;
-        u();
-        rb(true);
-        await slp(400);
-    }
-
-    if (p >= target) { await lc(); return; }
-    if (m <= 0) { await go(); return; }
-    }
-     async function lc() {
-        proc = true;
-        gold += GOLD_PER_LEVEL;
-        cur += Math.round(BOTTLES_PER_LEVEL * getBonusBottles());
-        if (m > 0) { addEnergy(m * ENERGY_PER_MOVE); }
-        u();
-
-        var modal = document.createElement('div');
-        modal.innerHTML = '<div class="metro-content" style="text-align:center"><h2>🎉 Уровень пройден!</h2><p>🪙 +' + GOLD_PER_LEVEL + ' | 🫙 +' + Math.round(BOTTLES_PER_LEVEL * getBonusBottles()) + '</p><p>⚡ +' + (m * ENERGY_PER_MOVE) + ' энергии</p><button id="nextLevelBtn" style="background:#f9ca24;color:#1a1a2e;border:none;padding:12px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px">➡️ Следующий уровень</button></div>';
-        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;';
-        document.body.appendChild(modal);
-
-        await new Promise(function(resolve) {
-            var btn = document.getElementById('nextLevelBtn');
-            if (btn) { btn.addEventListener('click', function() { modal.remove(); resolve(); }); }
-            else { resolve(); }
-        });
-
-        lv++;
-        p = 0;
-        m = MAX_MOVES + getBonusMoves();
-        b = createBoard();
-        var mf = findMatches(b).matches;
-        while (mf.size > 0) {
-            mf.forEach(function(k) {
-                var coords = k.split(',');
-                b[parseInt(coords[0])][parseInt(coords[1])] = S[Math.floor(Math.random() * S.length)];
-            });
-            mf = findMatches(b).matches;
-        }
-        if (!hvm()) shuffle();
-        sr = -1; sc = -1;
-        rb(false);
-        u();
-        proc = false;
-    }
-
-    async function go() {
-        proc = true;
-        var modal = document.createElement('div');
-        modal.innerHTML = '<div class="metro-content" style="text-align:center"><h2 style="color:#e74c3c;">💀 Ходы закончились!</h2><p>Попробуйте снова.</p><button id="retryBtn" style="background:#e74c3c;color:#fff;border:none;padding:12px 30px;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px">🔄 Попробовать снова</button></div>';
-        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;';
-        document.body.appendChild(modal);
-
-        await new Promise(function(resolve) {
-            var btn = document.getElementById('retryBtn');
-            if (btn) { btn.addEventListener('click', function() { modal.remove(); resolve(); }); }
-            else { resolve(); }
-        });
-
-        lv = Math.max(1, lv - 1);
-        p = 0;
-        m = MAX_MOVES + getBonusMoves();
-        b = createBoard();
-        var mf = findMatches(b).matches;
-        while (mf.size > 0) {
-            mf.forEach(function(k) {
-                var coords = k.split(',');
-                b[parseInt(coords[0])][parseInt(coords[1])] = S[Math.floor(Math.random() * S.length)];
-            });
-            mf = findMatches(b).matches;
-        }
-        if (!hvm()) shuffle();
-        sr = -1; sc = -1;
-        rb(false);
-        u();
-        proc = false;
-    }
-
-    function hvm() {
-        for (var r = 0; r < R; r++) {
-            for (var c = 0; c < C; c++) {
-                var v = b[r][c];
-                if (v === null || v === B || v === V) continue;
-                if (c < C - 1 && b[r][c+1] !== B && b[r][c+1] !== V) {
-                    var tmp = b[r][c]; b[r][c] = b[r][c+1]; b[r][c+1] = tmp;
-                    if (findMatches(b).matches.size > 0) {
-                        tmp = b[r][c]; b[r][c] = b[r][c+1]; b[r][c+1] = tmp;
-                        return true;
-                    }
-                    tmp = b[r][c]; b[r][c] = b[r][c+1]; b[r][c+1] = tmp;
-                }
-                if (r < R - 1 && b[r+1][c] !== B && b[r+1][c] !== V) {
-                    var tmp2 = b[r][c]; b[r][c] = b[r+1][c]; b[r+1][c] = tmp2;
-                    if (findMatches(b).matches.size > 0) {
-                        tmp2 = b[r][c]; b[r][c] = b[r+1][c]; b[r+1][c] = tmp2;
-                        return true;
-                    }
-                    tmp2 = b[r][c]; b[r][c] = b[r+1][c]; b[r+1][c] = tmp2;
-                }
-            }
-        }
-        return false;
-    }
-
-    function shuffle() {
-        while (!hvm()) {
-            for (var r = 0; r < R; r++) {
-                for (var c = 0; c < C; c++) {
-                    if (!isFruitLevel && Math.random() < 0.15 && r > 0 && r < R-1 && c > 0 && c < C-1) {
-                        b[r][c] = V;
-                    } else {
-                        b[r][c] = S[Math.floor(Math.random() * S.length)];
-                    }
-                }
-            }
-            var mf = findMatches(b).matches;
-            while (mf.size > 0) {
-                mf.forEach(function(k) {
-                    var coords = k.split(',');
-                    b[parseInt(coords[0])][parseInt(coords[1])] = S[Math.floor(Math.random() * S.length)];
-                });
-                mf = findMatches(b).matches;
-            }
-        }
-        rb(false);
-    }
-
-    function onClick(e) {
-        if (proc) return;
-        var r = parseInt(e.currentTarget.dataset.row);
-        var c = parseInt(e.currentTarget.dataset.col);
-        var v = b[r][c];
-        if (v === null || v === V) return;
-
-        if (v === B) {
-            b[r][c] = null;
-            var ex = ab(r, c);
-            ex.forEach(function(k) {
-                var coords = k.split(',');
-                var rr = parseInt(coords[0]);
-                var cc = parseInt(coords[1]);
-                b[rr][cc] = null;
-            });
-            rb(false, new Set(), ex);
-            setTimeout(function() {
-                for (var cc = 0; cc < C; cc++) {
-                    var wr = R - 1;
-                    for (var rr = R - 1; rr >= 0; rr--) {
-                        if (b[rr][cc] !== null) {
-                            b[wr][cc] = b[rr][cc];
-                            if (wr !== rr) b[rr][cc] = null;
-                            wr--;
-                        }
-                    }
-                    for (var rr2 = wr; rr2 >= 0; rr2--) {
-                        if (!isFruitLevel && Math.random() < 0.15 && rr2 > 0 && rr2 < R-1 && cc > 0 && cc < C-1) {
-                            b[rr2][cc] = V;
-                        } else {
-                            b[rr2][cc] = S[Math.floor(Math.random() * S.length)];
-                        }
-                    }
-                }
-                rb(true);
-                if (!hvm()) shuffle();
-            }, 500);
-            return;
-        }
-
-        if (sr === -1) { sr = r; sc = c; rb(false); return; }
-        if (sr === r && sc === c) { sr = -1; sc = -1; rb(false); return; }
-
-        var dr = Math.abs(r - sr);
-        var dc = Math.abs(c - sc);
-        if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
-            trySwap(sr, sc, r, c);
-        } else {
-            sr = r; sc = c;
-            rb(false);
-        }
-    }
-
-    async function trySwap(r1, c1, r2, c2) {
-        proc = true;
-        m--;
-        u();
-        var tmp = b[r1][c1];
-        b[r1][c1] = b[r2][c2];
-        b[r2][c2] = tmp;
-        var matches = findMatches(b).matches;
-        var hb = false;
-        for (var r = 0; r < R; r++) {
-            for (var c = 0; c < C; c++) {
-                if (b[r][c] === B) hb = true;
-            }
-        }
-        if (matches.size > 0 || hb) {
-            sr = -1; sc = -1;
-            await pmb(true);
-            rb(false);
-        } else {
-            tmp = b[r1][c1];
-            b[r1][c1] = b[r2][c2];
-            b[r2][c2] = tmp;
-            sr = -1; sc = -1;
-            rb(false);
-        }
-        proc = false;
-    }
-
-    function showShop() {
-        var html = '<div class="metro-content"><h2>🛒 Магазин</h2>';
-        html += '<p style="text-align:center;margin-bottom:15px;">🪙 ' + gold + ' | 🫙 ' + cur + '</p>';
-        html += '<p style="text-align:center;margin-bottom:15px;color:#a855f7;">Способности сохраняются!</p>';
-        var shopItems = [
-            { id: 'moves5', name: '➕ 5 ходов', cost: 30, desc: 'В наличии: ' + (abilities.moves5 || 0) + ' шт.', ability: 'moves5' },
-            { id: 'moves10', name: '➕ 10 ходов', cost: 50, desc: 'В наличии: ' + (abilities.moves10 || 0) + ' шт.', ability: 'moves10' },
-            { id: 'bombs', name: '💥 Бомба', cost: 40, desc: 'В наличии: ' + (abilities.bombs || 0) + ' шт.', ability: 'bombs' },
-            { id: 'shuffles', name: '🔀 Перемешать', cost: 20, desc: 'В наличии: ' + (abilities.shuffles || 0) + ' шт.', ability: 'shuffles' }
-        ];
-        for (var i = 0; i < shopItems.length; i++) {
-            var item = shopItems[i];
-            html += '<div class="station"><div class="header"><span>' + item.name + '</span><span>' + item.cost + ' 🫙</span></div><div class="bonus">' + item.desc + '</div><button data-item="' + item.id + '" class="buy-item-btn">Купить</button></div>';
-        }
-        html += '<button class="close-btn" id="closeShopBtn">✕ Закрыть</button></div>';
-        var modal = document.createElement('div');
-        modal.className = 'metro-modal';
-        modal.innerHTML = html;
-        document.body.appendChild(modal);
-        modal.querySelectorAll('.buy-item-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var itemId = this.dataset.item;
-                var item = shopItems.find(function(i) { return i.id === itemId; });
-                if (item) {
-                    if (cur < item.cost) { alert('❌ Не хватает банок! Нужно ' + item.cost + ' 🫙'); return; }
-                    cur -= item.cost;
-                    abilities[item.ability] = (abilities[item.ability] || 0) + 1;
-                    saveAbilities();
-                    u();
-                    modal.remove();
-                    showShop();
-                }
-            });
-        });
-        var closeBtn = modal.querySelector('#closeShopBtn');
-        if (closeBtn) { closeBtn.addEventListener('click', function() { modal.remove(); }); }
-    }
-
-    function showMetro() {
-        var html = '<div class="metro-content"><h2>🚇 Метро 2033</h2>';
-        for (var i = 0; i < ST.length; i++) {
-            var s = ST[i];
-            var cost = getStationCost(s.id);
-            var ownedCount = owned.filter(function(st) { return st === s.id; }).length;
-            var bonusText = '';
-            if (s.bonus.moves) bonusText += '➕' + s.bonus.moves + ' ходов ';
-            if (s.bonus.bottles) bonusText += '🍾+' + Math.round(s.bonus.bottles * 100) + '% банок';
-            html += '<div class="station"><div class="header"><span>' + s.name + ' (' + ownedCount + ' шт.)</span><span>' + cost + ' 🫙</span></div><div class="bonus">' + bonusText + '</div>';
-            if (ownedCount === 0) {
-                html += '<button data-station="' + s.id + '" class="buy-station-btn">Купить</button>';
-            } else {
-                html += '<button disabled>✔ Куплено</button>';
-            }
-            html += '</div>';
-        }
-        html += '<button class="close-btn" id="closeMetroBtn">✕ Закрыть</button></div>';
-        var modal = document.createElement('div');
-        modal.className = 'metro-modal';
-        modal.innerHTML = html;
-        document.body.appendChild(modal);
-        modal.querySelectorAll('.buy-station-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() { buyStation(this.dataset.station); });
-        });
-        var closeBtn = modal.querySelector('#closeMetroBtn');
-        if (closeBtn) { closeBtn.addEventListener('click', function() { modal.remove(); }); }
-    }
-
-    function buyStation(id) {
-        if (proc) return;
-        var cost = getStationCost(id);
-        if (cur < cost) { alert('Не хватает 🫙 банок!'); return; }
-        cur -= cost;
-        owned.push(id);
-        localStorage.setItem('metroStations', JSON.stringify(owned));
-        u();
-        alert('🚇 Станция ' + ST.find(function(s) { return s.id === id; }).name + ' восстановлена!');
-        var em = document.querySelector('.metro-modal');
-        if (em) em.remove();
-        showMetro();
-    }
-
-    function showMenu() {
-        if (ms) ms.style.display = 'flex';
-        if (gs) gs.style.display = 'none';
-        u();
-        generateDailyOffer();
-    }
-
-    function showGame() {
-        if (ms) ms.style.display = 'none';
-        if (gs) gs.style.display = 'flex';
-        lv = parseInt(localStorage.getItem('currentLevel')) || 1;
-        target = getTarget();
-        p = 0;
-        m = MAX_MOVES + getBonusMoves();
-        b = createBoard();
-        var mf = findMatches(b).matches;
-        while (mf.size > 0) {
-            mf.forEach(function(k) {
-                var coords = k.split(',');
-                b[parseInt(coords[0])][parseInt(coords[1])] = S[Math.floor(Math.random() * S.length)];
-            });
-            mf = findMatches(b).matches;
-        }
-        if (!hvm()) shuffle();
-        sr = -1; sc = -1;
-        rb(false);
-        u();
-    }
-
-    // Привязка кнопок
-    document.getElementById('playBtn').addEventListener('click', showGame);
-    document.getElementById('backToMenuBtn').addEventListener('click', showMenu);
-    document.getElementById('dailyOfferBtn').addEventListener('click', claimDailyOffer);
-    document.getElementById('navShop').addEventListener('click', showShop);
-    document.getElementById('navHome').addEventListener('click', showMenu);
-    document.getElementById('navMetro').addEventListener('click', showMetro);
-    document.getElementById('navTournament').addEventListener('click', function() { alert('🏆 Турниры скоро появятся!'); });
-    document.getElementById('navQuests').addEventListener('click', function() { alert('📋 Задания скоро появятся!'); });
-    
-    document.getElementById('useMoves5').addEventListener('click', function() {
-        if (abilities.moves5 > 0) { abilities.moves5--; m += 5; saveAbilities(); u(); alert('✅ +5 ходов!'); }
-        else { alert('❌ Нет способностей!'); }
-    });
-    document.getElementById('useMoves10').addEventListener('click', function() {
-        if (abilities.moves10 > 0) { abilities.moves10--; m += 10; saveAbilities(); u(); alert('✅ +10 ходов!'); }
-        else { alert('❌ Нет способностей!'); }
-    });
-    document.getElementById('useBomb').addEventListener('click', function() {
-        if (abilities.bombs > 0) {
-            abilities.bombs--; saveAbilities(); u();
-            alert('💥 Выбери клетку для взрыва!');
-            proc = true;
-            var bombHandler = function(e) {
-                var r = parseInt(e.currentTarget.dataset.row), c = parseInt(e.currentTarget.dataset.col);
-                for (var dr = -1; dr <= 1; dr++) { for (var dc = -1; dc <= 1; dc++) { var nr = r+dr, nc = c+dc; if (nr>=0&&nr<R&&nc>=0&&nc<C) b[nr][nc] = null; } }
-                for (var cc = 0; cc < C; cc++) { var wr = R-1; for (var rr = R-1; rr >= 0; rr--) { if (b[rr][cc] !== null) { b[wr][cc] = b[rr][cc]; if (wr !== rr) b[rr][cc] = null; wr--; } } for (var rr2 = wr; rr2 >= 0; rr2--) { b[rr2][cc] = S[Math.floor(Math.random()*S.length)]; } }
-                rb(true); proc = false;
-                be.querySelectorAll('.cell').forEach(function(cell) { cell.removeEventListener('click', bombHandler); });
-            };
-            be.querySelectorAll('.cell').forEach(function(cell) { cell.addEventListener('click', bombHandler, { once: true }); });
-        } else { alert('❌ Нет бомб!'); }
-    });
-    document.getElementById('useShuffle').addEventListener('click', function() {
-        if (abilities.shuffles > 0) { abilities.shuffles--; saveAbilities(); shuffle(); u(); alert('🔀 Доска перемешана!'); }
-        else { alert('❌ Нет перемешиваний!'); }
-    });
-    document.getElementById('openShopInGame').addEventListener('click', showShop);
-
-    showMenu();
-    u();
-    generateDailyOffer();
-
+showMenu();
+u();
+generateDailyOffer();
 })();
 </script>
 </body>
-</html>   
+</html>
